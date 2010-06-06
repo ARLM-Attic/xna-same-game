@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SameGameXna.Xna
 {
-	public class GraphicsDeviceService : IGraphicsDeviceService, IDisposable
+	public class GameGraphicsDeviceService : IGameGraphicsDeviceService, IDisposable
 	{
 		Game game;
 		Control host;
@@ -27,13 +27,14 @@ namespace SameGameXna.Xna
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public GraphicsDeviceService(Game game)
+		public GameGraphicsDeviceService(Game game)
 		{
 			this.game = game;
 			this.game.Services.AddService(typeof(IGraphicsDeviceService), this);
+			this.game.Services.AddService(typeof(IGameGraphicsDeviceService), this);
 		}
 
-		~GraphicsDeviceService()
+		~GameGraphicsDeviceService()
 		{
 			Dispose(false);
 		}
@@ -71,8 +72,8 @@ namespace SameGameXna.Xna
 
 			pp = new PresentationParameters();
 
-			pp.BackBufferWidth = control.ClientSize.Width;
-			pp.BackBufferHeight = control.ClientSize.Height;
+			pp.BackBufferWidth = width;
+			pp.BackBufferHeight = height;
 			pp.BackBufferFormat = SurfaceFormat.Color;
 
 			pp.EnableAutoDepthStencil = true;

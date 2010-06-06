@@ -7,25 +7,18 @@ namespace SameGameXna.Forms
 	public class GameControl : Control
 	{
 		Game game;
-
-		public GraphicsDeviceService GraphicsDeviceService
-		{
-			get;
-			private set;
-		}
-
+				
 		public GameControl(Game game)
 			: base()
 		{
 			this.game = game;
-
-			this.GraphicsDeviceService = new GraphicsDeviceService(this.game);
 		}
 
 		protected override void OnCreateControl()
 		{
 			base.OnCreateControl();
-			this.GraphicsDeviceService.CreateDevice(this, 800, 600);			
+			this.game.GraphicsDeviceService.CreateDevice(this, 800, 576);
+			this.game.Initialize();
 		}
 
 		/// <summary>
@@ -38,14 +31,16 @@ namespace SameGameXna.Forms
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if(this.GraphicsDeviceService.GraphicsDevice != null && this.GraphicsDeviceService.IsDeviceValid())
-			{
-				var graphics = this.GraphicsDeviceService.GraphicsDevice;
+			if(this.game.GraphicsDeviceService.GraphicsDevice != null && this.game.GraphicsDeviceService.IsDeviceValid())
+				this.game.Draw();
+		}
 
-				graphics.Clear(Microsoft.Xna.Framework.Graphics.Color.CornflowerBlue);
+		protected override void OnMouseClick(MouseEventArgs e)
+		{
+			base.OnMouseClick(e);
 
-				this.GraphicsDeviceService.Present();
-			}
+			if(e.Button == MouseButtons.Left)
+				this.game.Board.LeftClick(new Microsoft.Xna.Framework.Point(e.Location.X, e.Location.Y));
 		}
 	}
 }
