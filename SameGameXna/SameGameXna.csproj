@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Block.cs" />
     <Compile Include="BlockColor.cs" />
+    <Compile Include="BlockMultiplier.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Forms\GameControl.cs">
       <SubType>Component</SubType>

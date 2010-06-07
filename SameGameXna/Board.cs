@@ -23,6 +23,23 @@ namespace SameGameXna
 			get { return 576; }
 		}
 
+		public int SelectedCount
+		{
+			get;
+			private set;
+		}
+
+		public int SelectedValue
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// Triggered when the selection of blocks changes.
+		/// </summary>
+		public event EventHandler SelectedChanged;
+
 		public Board(Game game)
 		{
 			this.game = game;
@@ -31,7 +48,7 @@ namespace SameGameXna
 
 			for(int y = 0; y < Rows; y++)
 				for(int x = 0; x < Columns; x++)
-					this.blocks[x, y] = new Block(game, this);
+					this.blocks[x, y] = new Block(game);
 		}
 
 		public void Initialize()
@@ -61,58 +78,64 @@ namespace SameGameXna
 		public void LeftClick(Point point)
 		{
 			var boardPosition = new Point(point.X / Block.Width, point.Y / Block.Height);
+
+			ScanStart(boardPosition);
 		}
 
-		/*
-		public void ScanBoardStart(Point point)
+		private void ScanStart(Point boardPosition)
 		{
-			worth = 0;
+			for(int y = 0; y < Rows; y++)
+				for(int x = 0; x < Columns; x++)
+					this.blocks[x, y].Selected = false;
 
-			blocks[(int)Math.Floor((float)(point.X / BlockWidth))][(int)Math.Floor((float)(point.Y / BlockHeight))].Selected = true;
-			selected = 1;
+			this.SelectedValue = 0;
 
-			ScanBoard();
+			this.blocks[boardPosition.X, boardPosition.Y].Selected = true;
+			this.SelectedCount = 1;
 
-			if(selected > 1)
+			Scan();
+
+			if(this.SelectedCount > 1)
 			{
 				int multiplier = 1;
-				for(int x = 0; x < BlockColumns; x++)
-					for(int y = 0; y < BlockRows; y++)
-						if(blocks[x][y].Selected)
-							multiplier *= blocks[x][y].Multiplier;
 
-				worth = ((int)Math.Pow((double)(selected - 2), 2.0) + 1) * multiplier;
+				for(int y = 0; y < Rows; y++)
+					for(int x = 0; x < Columns; x++)
+						if(this.blocks[x, y].Selected)
+							multiplier *= (int)this.blocks[x, y].Multiplier;
+
+				this.SelectedValue = ((int)Math.Pow((double)(this.SelectedCount - 2), 2.0) + 1) * multiplier;
 			}
 		}
 
-		private void ScanBoard()
+		private void Scan()
 		{
 			int count = 0;
 
-			for(int x = 0; x < BlockColumns; x++)
+			for(int y = 0; y < Rows; y++)
 			{
-				for(int y = 0; y < BlockRows; y++)
+				for(int x = 0; x < Columns; x++)
 				{
-					if(blocks[x][y].Visible == true && blocks[x][y].Selected == false)
+					if(this.blocks[x, y].Visible == true && this.blocks[x, y].Selected == false)
 					{
-						if(x > 0 && blocks[x - 1][y].Visible && blocks[x - 1][y].Selected && blocks[x - 1][y].BlockColor == blocks[x][y].BlockColor)
+						if(x > 0 && this.blocks[x - 1, y].Visible && this.blocks[x - 1, y].Selected && this.blocks[x - 1, y].Color == this.blocks[x, y].Color)
 						{
-							blocks[x][y].Selected = true;
+							this.blocks[x, y].Selected = true;
 							count++;
 						}
-						else if(x < 24 && blocks[x + 1][y].Visible && blocks[x + 1][y].Selected && blocks[x + 1][y].BlockColor == blocks[x][y].BlockColor)
+						else if(x < Columns - 1 && this.blocks[x + 1, y].Visible && this.blocks[x + 1, y].Selected && this.blocks[x + 1, y].Color == this.blocks[x, y].Color)
 						{
-							blocks[x][y].Selected = true;
+							this.blocks[x, y].Selected = true;
 							count++;
 						}
-						else if(y > 0 && blocks[x][y - 1].Visible && blocks[x][y - 1].Selected && blocks[x][y - 1].BlockColor == blocks[x][y].BlockColor)
+						else if(y > 0 && this.blocks[x, y - 1].Visible && this.blocks[x, y - 1].Selected && this.blocks[x, y - 1].Color == this.blocks[x, y].Color)
 						{
-							blocks[x][y].Selected = true;
+							this.blocks[x, y].Selected = true;
 							count++;
 						}
-						else if(y < 14 && blocks[x][y + 1].Visible && blocks[x][y + 1].Selected && blocks[x][y + 1].BlockColor == blocks[x][y].BlockColor)
+						else if(y < Rows - 1 && this.blocks[x, y + 1].Visible && this.blocks[x, y + 1].Selected && this.blocks[x, y + 1].Color == this.blocks[x, y].Color)
 						{
-							blocks[x][y].Selected = true;
+							this.blocks[x, y].Selected = true;
 							count++;
 						}
 					}
@@ -120,11 +143,12 @@ namespace SameGameXna
 			}
 
 			if(count > 0)
-				ScanBoard();
+				Scan();
 
-			selected += count;
+			this.SelectedCount += count;
 		}
 
+		/*
 		public void RemoveSelected()
 		{
 			score += worth;
@@ -133,11 +157,11 @@ namespace SameGameXna
 			{
 				for(int y = 0; y < BlockRows; y++)
 				{
-					if(blocks[x][y].Selected == true)
+					if(this.blocks[x, y].Selected == true)
 					{
-						blocks[x][y].Visible = false;
-						blocks[x][y].Selected = false;
-						blocksLeft--;
+						this.blocks[x, y].Visible = false;
+						this.blocks[x, y].Selected = false;
+						this.blocksLeft--;
 					}
 				}
 			}
@@ -153,16 +177,16 @@ namespace SameGameXna
 			{
 				for(int x = 0; x < BlockColumns; x++)
 				{
-					if(blocks[x][y].Visible == false)
+					if(this.blocks[x, y].Visible == false)
 					{
-						if(blocks[x][y - 1].Visible == true)
+						if(this.blocks[x, y - 1].Visible == true)
 						{
-							blocks[x][y].Visible = true;
-							blocks[x][y].Color = blocks[x][y - 1].Color;
-							blocks[x][y].Multiplier = blocks[x][y - 1].Multiplier;
-							blocks[x][y].Y = blocks[x][y - 1].Y;
-							blocks[x][y].Scale = blocks[x][y - 1].Scale;
-							blocks[x][y - 1].Visible = false;
+							this.blocks[x, y].Visible = true;
+							this.blocks[x, y].Color = this.blocks[x, y - 1].Color;
+							this.blocks[x, y].Multiplier = this.blocks[x, y - 1].Multiplier;
+							this.blocks[x, y].Y = this.blocks[x, y - 1].Y;
+							this.blocks[x, y].Scale = this.blocks[x, y - 1].Scale;
+							this.blocks[x, y - 1].Visible = false;
 							moved++;
 						}
 					}
@@ -184,7 +208,7 @@ namespace SameGameXna
 				bool empty = true;
 				for(int y = 0; y < 15; y++)
 				{
-					if(blocks[x - 1][y].Visible == true)
+					if(this.blocks[x - 1, y].Visible == true)
 					{
 						empty = false;
 						break;
@@ -195,13 +219,13 @@ namespace SameGameXna
 				{
 					for(int y = 0; y < BlockRows; y++)
 					{
-						if(blocks[x][y].Visible == true)
+						if(this.blocks[x, y].Visible == true)
 						{
-							blocks[x - 1][y].Visible = true;
-							blocks[x - 1][y].Color = blocks[x][y].Color;
-							blocks[x - 1][y].Multiplier = blocks[x][y].Multiplier;
-							blocks[x - 1][y].Scale = blocks[x][y].Scale;
-							blocks[x][y].Visible = false;
+							this.blocks[x - 1, y].Visible = true;
+							this.blocks[x - 1, y].Color = this.blocks[x, y].Color;
+							this.blocks[x - 1, y].Multiplier = this.blocks[x, y].Multiplier;
+							this.blocks[x - 1, y].Scale = this.blocks[x, y].Scale;
+							this.blocks[x, y].Visible = false;
 
 							moved++;
 						}
@@ -225,15 +249,15 @@ namespace SameGameXna
 			{
 				for(int y = 0; y < BlockRows; y++)
 				{
-					if(blocks[x][y].Visible)
+					if(blocks[x, y].Visible)
 					{
-						if(x > 0 && blocks[x - 1][y].Visible && blocks[x - 1][y].BlockColor == blocks[x][y].BlockColor)
+						if(x > 0 && blocks[x - 1, y].Visible && blocks[x - 1, y].Color == blocks[x, y].Color)
 							return false;
-						else if(x < 24 && blocks[x + 1][y].Visible && blocks[x + 1][y].BlockColor == blocks[x][y].BlockColor)
+						else if(x < 24 && blocks[x + 1, y].Visible && blocks[x + 1, y].Color == blocks[x, y].Color)
 							return false;
-						else if(y > 0 && blocks[x][y - 1].Visible && blocks[x][y - 1].BlockColor == blocks[x][y].BlockColor)
+						else if(y > 0 && blocks[x, y - 1].Visible && blocks[x, y - 1].Color == blocks[x, y].Color)
 							return false;
-						else if(y < 14 && blocks[x][y + 1].Visible && blocks[x][y + 1].BlockColor == blocks[x][y].BlockColor)
+						else if(y < 14 && blocks[x, y + 1].Visible && blocks[x, y + 1].Color == blocks[x, y].Color)
 							return false;
 					}
 				}

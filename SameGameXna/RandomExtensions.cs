@@ -18,5 +18,25 @@ namespace SameGameXna
 
 			return BlockColor.Red;
 		}
+
+		public static BlockMultiplier NextBlockMultipler(this Random random)
+		{
+			int i = random.Next(20);
+
+			if(i == 5 || i == 10 || i == 15)
+			{
+				i = random.Next(4);
+
+				switch(i)
+				{
+					case 0: return BlockMultiplier.x1;
+					case 1: return BlockMultiplier.x2;
+					case 2: return BlockMultiplier.x3;
+					case 3: return BlockMultiplier.x5;
+				}
+			}
+
+			return BlockMultiplier.x1;
+		}
 	}
 }

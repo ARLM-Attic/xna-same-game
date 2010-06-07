@@ -5,7 +5,7 @@ namespace SameGameXna
 {
 	public enum BlockColor
 	{
-		Red,
+		Red = 1,
 		Green,
 		Yellow,
 		Blue
