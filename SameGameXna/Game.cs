@@ -61,13 +61,13 @@ namespace SameGameXna
 
 			this.Services = new ServiceContainer();
 
-			this.GameForm = new GameForm(this);
-			
-			this.GraphicsDeviceService = new GameGraphicsDeviceService(this);
-
 			this.Random = new Random();
 
 			this.Board = new Board(this);
+
+			this.GameForm = new GameForm(this);
+			
+			this.GraphicsDeviceService = new GameGraphicsDeviceService(this);
 		}
 
 		public void Run()

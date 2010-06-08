@@ -106,6 +106,9 @@ namespace SameGameXna
 
 				this.SelectedValue = ((int)Math.Pow((double)(this.SelectedCount - 2), 2.0) + 1) * multiplier;
 			}
+
+			if(this.SelectedChanged != null)
+				this.SelectedChanged(this, EventArgs.Empty);
 		}
 
 		private void Scan()

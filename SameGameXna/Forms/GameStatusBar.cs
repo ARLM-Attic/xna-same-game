@@ -13,6 +13,14 @@ namespace SameGameXna.Forms
 			this.game = game;
 
 			this.SizingGrip = false;
+
+			this.game.Board.SelectedChanged += (s, e) => { UpdateText(); };
+		}
+				
+		public void UpdateText()
+		{
+			this.Items.Clear();
+			this.Items.Add("Selected: " + this.game.Board.SelectedCount.ToString());
 		}
 	}
 }

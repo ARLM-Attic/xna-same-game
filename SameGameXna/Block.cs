@@ -93,7 +93,21 @@ namespace SameGameXna
 
 		public void Swap(Block other)
 		{
+			BlockColor tempColor = this.Color;
+			this.Color = other.Color;
+			other.Color = tempColor;
 
+			BlockMultiplier tempMultiplier = this.Multiplier;
+			this.Multiplier = other.Multiplier;
+			other.Multiplier = tempMultiplier;
+
+			Point tempBoardPosition = this.BoardPosition;
+			this.BoardPosition = other.BoardPosition;
+			other.BoardPosition = tempBoardPosition;
+
+			bool tempVisible = this.Visible;
+			this.Visible = other.Visible;
+			other.Visible = tempVisible;
 		}
 	}
 }
