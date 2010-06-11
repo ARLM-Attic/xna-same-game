@@ -42,5 +42,13 @@ namespace SameGameXna.Forms
 			if(e.Button == MouseButtons.Left)
 				this.game.Board.LeftClick(new Microsoft.Xna.Framework.Point(e.Location.X, e.Location.Y));
 		}
+
+		protected override void  OnMouseDoubleClick(MouseEventArgs e)
+		{
+			base.OnMouseDoubleClick(e);
+
+			if(e.Button == MouseButtons.Left)
+				this.game.Board.DoubleLeftClick(new Microsoft.Xna.Framework.Point(e.Location.X, e.Location.Y));
+		}
 	}
 }

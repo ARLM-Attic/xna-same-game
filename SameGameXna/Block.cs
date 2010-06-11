@@ -12,17 +12,23 @@ namespace SameGameXna
 
 		Game game;
 		Vector2 position;
-
+				
 		public BlockColor Color
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public BlockMultiplier Multiplier
 		{
 			get;
-			private set;
+			set;
+		}
+
+		public Vector2 Position
+		{
+			get { return this.position; }
+			set { this.position = value; }
 		}
 
 		public Point BoardPosition
@@ -32,6 +38,12 @@ namespace SameGameXna
 		}
 
 		public bool Selected
+		{
+			get;
+			set;
+		}
+
+		public float Scale
 		{
 			get;
 			set;
@@ -56,6 +68,10 @@ namespace SameGameXna
 			this.Multiplier = this.game.Random.NextBlockMultipler();
 
 			this.position = new Vector2(this.BoardPosition.X * Width, this.BoardPosition.Y * Height - this.game.Board.Height);
+
+			this.Selected = false;
+
+			this.Scale = 1.0f;
 			this.Visible = true;
 		}
 
@@ -63,7 +79,11 @@ namespace SameGameXna
 		{
 			Vector2 destination = new Vector2(this.BoardPosition.X * Width, this.BoardPosition.Y * Height);
 
-			this.position.X = destination.X;
+			if(this.position.X > destination.X)
+				this.position.X -= Speed * (float)elapsed.TotalSeconds;
+
+			if(this.position.X < destination.X)
+				this.position.X = destination.X;
 
 			if(this.position.Y < destination.Y)
 				this.position.Y += Speed * (float)elapsed.TotalSeconds;
@@ -74,40 +94,25 @@ namespace SameGameXna
 				
 		public void Draw(SpriteBatch spriteBatch, Texture2D blockTexture)
 		{
-			var position = new Vector2((int)this.position.X, (int)this.position.Y);
+			var position = new Vector2((int)this.position.X + (Width / 2), (int)this.position.Y + (Height / 2));
 			
-			var source = new Rectangle(0, 0, 32, 32);
+			var source = new Rectangle(0, 0, Width, Width);
 
 			if(this.Multiplier == BlockMultiplier.x2)
-				source.X = 32;
+				source.X = Width;
 			else if(this.Multiplier == BlockMultiplier.x3)
-				source.X = 64;
+				source.X = Width * 2;
 			else if(this.Multiplier == BlockMultiplier.x5)
-				source.X = 96;
+				source.X = Width * 3;
 
-			spriteBatch.Draw(blockTexture, position, source, this.Color.ToXnaColor());
+			spriteBatch.Draw(blockTexture, position, source, this.Color.ToXnaColor(),
+						     0, new Vector2(16, 16), this.Scale, SpriteEffects.None, 0);
 
 			if(this.Selected)
-				spriteBatch.Draw(blockTexture, position, new Rectangle(128, 0, 32, 32), Microsoft.Xna.Framework.Graphics.Color.Gray); 
-		}
-
-		public void Swap(Block other)
-		{
-			BlockColor tempColor = this.Color;
-			this.Color = other.Color;
-			other.Color = tempColor;
-
-			BlockMultiplier tempMultiplier = this.Multiplier;
-			this.Multiplier = other.Multiplier;
-			other.Multiplier = tempMultiplier;
-
-			Point tempBoardPosition = this.BoardPosition;
-			this.BoardPosition = other.BoardPosition;
-			other.BoardPosition = tempBoardPosition;
-
-			bool tempVisible = this.Visible;
-			this.Visible = other.Visible;
-			other.Visible = tempVisible;
+			{
+				spriteBatch.Draw(blockTexture, position, new Rectangle(128, 0, Width, Height), new Microsoft.Xna.Framework.Graphics.Color(180, 180, 180, 180),
+								 0, new Vector2(16, 16), this.Scale, SpriteEffects.None, 0);
+			}
 		}
 	}
 }
