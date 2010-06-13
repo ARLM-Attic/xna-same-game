@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SameGameXna.Forms
 {
-	public class GameForm : Form
+	public class GameForm : Form, IGameWindow
 	{
 		Game game;
 		GameControl gameControl;
@@ -16,6 +16,8 @@ namespace SameGameXna.Forms
 			get { return new Size(800, 600); }
 			set { }
 		}
+
+		public event EventHandler Idle;
 				
 		public GameForm(Game game)
 			: base()
@@ -46,6 +48,19 @@ namespace SameGameXna.Forms
 			this.Controls.Add(this.gameStatusBar);
 		}
 
+		public void Run()
+		{
+			Application.EnableVisualStyles();
+			Application.Idle += Application_Idle;
+			Application.Run(this);
+		}
+
+		private void Application_Idle(object sender, EventArgs e)
+		{
+			if(this.Idle != null)
+				this.Idle(this, EventArgs.Empty);
+		}
+
 		protected override void OnCreateControl()
 		{
 			base.OnCreateControl();
@@ -54,6 +69,20 @@ namespace SameGameXna.Forms
 			int addedHeight = 576 - this.gameControl.Height;
 
 			this.Size = new Size(this.Width + addedWidth, this.Height + addedHeight);
+		}
+
+		public void ShowMessage(GameMessages message)
+		{
+			string messageText = "";
+
+			switch(message)
+			{
+				case GameMessages.AtLeast2BlocksMustBeSelectedToRemove:
+					messageText = "At least 2 blocks must be selected to remove.";
+					break;
+			}
+
+			MessageBox.Show(messageText, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }

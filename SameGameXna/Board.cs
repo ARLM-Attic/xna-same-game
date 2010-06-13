@@ -130,7 +130,11 @@ namespace SameGameXna
 		public void DoubleLeftClick(Point point)
 		{
 			var boardPosition = new Point(point.X / Block.Width, point.Y / Block.Height);
-			BeginRemoveAnimation();
+
+			if(this.SelectedCount >= 2)
+				BeginRemoveAnimation();
+			else
+				this.game.Window.ShowMessage(GameMessages.AtLeast2BlocksMustBeSelectedToRemove);
 		}
 
 		private void ScanStart(Point boardPosition)

@@ -37,7 +37,7 @@ namespace SameGameXna
 			}
 		}
 
-		public GameForm GameForm
+		public IGameWindow Window
 		{
 			get;
 			private set;
@@ -65,20 +65,19 @@ namespace SameGameXna
 
 			this.Board = new Board(this);
 
-			this.GameForm = new GameForm(this);
+			this.Window = new GameForm(this);
+			this.Window.Idle += GameWindow_Idle;
 			
 			this.GraphicsDeviceService = new GameGraphicsDeviceService(this);
 		}
 
-		public void Run()
-		{
-			Application.EnableVisualStyles();
-			Application.Idle += Application_Idle;
-			Application.Run(this.GameForm);
-		}
-
 		public void Dispose()
 		{
+		}
+
+		public void Run()
+		{
+			this.Window.Run();
 		}
 
 		public static void Main()
@@ -93,7 +92,7 @@ namespace SameGameXna
 			this.Board.Initialize();
 		}
 
-		private void Application_Idle(object sender, EventArgs e)
+		private void GameWindow_Idle(object sender, EventArgs e)
 		{
 			Win32Message msg;
 			while(!Win32Methods.PeekMessage(out msg, IntPtr.Zero, 0, 0, 0))

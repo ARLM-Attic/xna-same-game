@@ -62,6 +62,8 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameClock.cs" />
+    <Compile Include="GameMessages.cs" />
+    <Compile Include="IGameWindow.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="Win32\Win32Message.cs" />
     <Compile Include="Win32\Win32Methods.cs" />
