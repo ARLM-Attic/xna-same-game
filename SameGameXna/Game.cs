@@ -14,7 +14,13 @@ namespace SameGameXna
 
 		SpriteBatch spriteBatch;
 				
-		public ServiceContainer Services
+		public GameServiceContainer Services
+		{
+			get;
+			private set;
+		}
+
+		public GameSettings Settings
 		{
 			get;
 			private set;
@@ -59,7 +65,9 @@ namespace SameGameXna
 		{
 			this.gameClock = new GameClock();
 
-			this.Services = new ServiceContainer();
+			this.Services = new GameServiceContainer();
+
+			this.Settings = GameSettings.Load();
 
 			this.Random = new Random();
 
@@ -78,6 +86,7 @@ namespace SameGameXna
 		public void Run()
 		{
 			this.Window.Run();
+			this.Settings.Save();
 		}
 
 		public static void Main()

@@ -133,7 +133,7 @@ namespace SameGameXna
 
 			if(this.SelectedCount >= 2)
 				BeginRemoveAnimation();
-			else
+			else if(this.SelectedCount == 1)
 				this.game.Window.ShowMessage(GameMessages.AtLeast2BlocksMustBeSelectedToRemove);
 		}
 
@@ -215,8 +215,15 @@ namespace SameGameXna
 
 		private void BeginRemoveAnimation()
 		{
-			this.removeAnimationInProgress = true;
-			this.removeAnimationDuation = TimeSpan.Zero;
+			if(this.game.Settings.Animate)
+			{
+				this.removeAnimationInProgress = true;
+				this.removeAnimationDuation = TimeSpan.Zero;
+			}
+			else
+			{
+				RemoveSelected();
+			}
 		}
 
 		private void RemoveSelected()

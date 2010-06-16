@@ -63,12 +63,13 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameClock.cs" />
     <Compile Include="GameMessages.cs" />
+    <Compile Include="GameSettings.cs" />
     <Compile Include="IGameWindow.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="Win32\Win32Message.cs" />
     <Compile Include="Win32\Win32Methods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceContainer.cs" />
+    <Compile Include="GameServiceContainer.cs" />
     <Compile Include="Xna\GameGraphicsDeviceService.cs" />
     <Compile Include="Xna\IGameGraphicsDeviceService.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -4,14 +4,14 @@ using System.ComponentModel;
 
 namespace SameGameXna
 {
-	public class ServiceContainer : IServiceProvider
+	public class GameServiceContainer : IServiceProvider
 	{
 		Dictionary<Type, Object> services;
 
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public ServiceContainer()
+		public GameServiceContainer()
 			: base()
 		{
 			this.services = new Dictionary<Type, object>();

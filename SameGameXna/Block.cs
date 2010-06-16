@@ -79,17 +79,24 @@ namespace SameGameXna
 		{
 			Vector2 destination = new Vector2(this.BoardPosition.X * Width, this.BoardPosition.Y * Height);
 
-			if(this.position.X > destination.X)
-				this.position.X -= Speed * (float)elapsed.TotalSeconds;
+			if(this.game.Settings.Animate)
+			{
+				if(this.position.X > destination.X)
+					this.position.X -= Speed * (float)elapsed.TotalSeconds;
 
-			if(this.position.X < destination.X)
-				this.position.X = destination.X;
+				if(this.position.X < destination.X)
+					this.position.X = destination.X;
 
-			if(this.position.Y < destination.Y)
-				this.position.Y += Speed * (float)elapsed.TotalSeconds;
+				if(this.position.Y < destination.Y)
+					this.position.Y += Speed * (float)elapsed.TotalSeconds;
 
-			if(this.position.Y > destination.Y)
-				this.position.Y = destination.Y;
+				if(this.position.Y > destination.Y)
+					this.position.Y = destination.Y;
+			}
+			else
+			{
+				this.position = destination;
+			}
 		}
 				
 		public void Draw(SpriteBatch spriteBatch, Texture2D blockTexture)
