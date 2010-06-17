@@ -35,7 +35,7 @@ namespace SameGameXna
 		/// Loads from a file or creates a new instance.
 		/// </summary>
 		/// <returns></returns>
-		public static GameSettings Load()
+		public static GameSettings LoadOrCreate()
 		{
 			if(File.Exists("settings.xml"))
 			{

@@ -21,18 +21,17 @@ namespace SameGameXna
 
 		public static BlockMultiplier NextBlockMultipler(this Random random)
 		{
-			int i = random.Next(20);
+			int i = random.Next(51);
 
-			if(i == 5 || i == 10 || i == 15)
+			if(i % 10 == 0)
 			{
-				i = random.Next(4);
+				i = random.Next(3);
 
 				switch(i)
 				{
-					case 0: return BlockMultiplier.x1;
-					case 1: return BlockMultiplier.x2;
-					case 2: return BlockMultiplier.x3;
-					case 3: return BlockMultiplier.x5;
+					case 0: return BlockMultiplier.x2;
+					case 1: return BlockMultiplier.x3;
+					case 2: return BlockMultiplier.x5;
 				}
 			}
 

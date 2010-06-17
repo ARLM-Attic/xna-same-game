@@ -26,6 +26,12 @@ namespace SameGameXna
 			private set;
 		}
 
+		public HighScores HighScores
+		{
+			get;
+			private set;
+		}
+
 		public IGameGraphicsDeviceService GraphicsDeviceService
 		{
 			get;
@@ -67,11 +73,14 @@ namespace SameGameXna
 
 			this.Services = new GameServiceContainer();
 
-			this.Settings = GameSettings.Load();
+			this.Settings = GameSettings.LoadOrCreate();
+
+			this.HighScores = HighScores.LoadOrCreate();
 
 			this.Random = new Random();
 
 			this.Board = new Board(this);
+			this.Board.GameOver += GameOver;
 
 			this.Window = new GameForm(this);
 			this.Window.Idle += GameWindow_Idle;
@@ -87,6 +96,7 @@ namespace SameGameXna
 		{
 			this.Window.Run();
 			this.Settings.Save();
+			this.HighScores.Save();
 		}
 
 		public static void Main()
@@ -139,6 +149,11 @@ namespace SameGameXna
 			this.spriteBatch.End();
 			
 			this.GraphicsDeviceService.Present();
+		}
+
+		private void GameOver(object sender, EventArgs e)
+		{
+			this.Window.ShowGameOverMessage(this.Board.Score, false, "");
 		}
 
 		public void NewGame()

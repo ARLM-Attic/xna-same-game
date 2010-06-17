@@ -38,13 +38,13 @@ namespace SameGameXna
 			private set;
 		}
 
-		public int SelectedValue
+		public UInt64 SelectedValue
 		{
 			get;
 			private set;
 		}
 
-		public int Score
+		public UInt64 Score
 		{
 			get;
 			private set;
@@ -56,10 +56,21 @@ namespace SameGameXna
 			private set;
 		}
 
+		public bool IsGameOver
+		{
+			get;
+			private set;
+		}
+
 		/// <summary>
 		/// Triggered when the selection of blocks changes.
 		/// </summary>
 		public event EventHandler StatsUpdated;
+
+		/// <summary>
+		/// Triggered when the game has come to an end.
+		/// </summary>
+		public event EventHandler GameOver;
 
 		public Board(Game game)
 		{
@@ -85,6 +96,8 @@ namespace SameGameXna
 			this.SelectedValue = 0;
 			this.Score = 0;
 			this.Remaining = TotalBlocks;
+
+			this.IsGameOver = false;
 
 			if(this.StatsUpdated != null)
 				this.StatsUpdated(this, EventArgs.Empty);
@@ -161,7 +174,7 @@ namespace SameGameXna
 							if(this.blocks[x, y].Selected)
 								multiplier *= (int)this.blocks[x, y].Multiplier;
 
-					this.SelectedValue = ((int)Math.Pow((double)(this.SelectedCount - 2), 2.0) + 1) * multiplier;
+					this.SelectedValue = (UInt64)((Math.Pow((double)(this.SelectedCount - 2), 2.0) + 1) * multiplier);
 				}
 			}
 			else
@@ -250,6 +263,14 @@ namespace SameGameXna
 
 			if(this.StatsUpdated != null)
 				this.StatsUpdated(this, EventArgs.Empty);
+
+			if(HasGameEnded())
+			{
+				this.IsGameOver = true;
+
+				if(this.GameOver != null)
+					this.GameOver(this, EventArgs.Empty);
+			}
 		}
 
 		private void MoveBlocksDown()
@@ -321,20 +342,14 @@ namespace SameGameXna
 				MoveBlocksLeft();
 		}
 
-		public bool HasGameEnded()
+		private bool HasGameEnded()
 		{
-			return false;
-
-			/*
-			if(blocksLeft == 0)
+			if(this.Remaining == 0)
 				return true;
-
-			if(singleRemoves > 0)
-				return false;
-
-			for(int x = 0; x < BlockColumns; x++)
+			
+			for(int y = 0; y < Rows; y++)
 			{
-				for(int y = 0; y < BlockRows; y++)
+				for(int x = 0; x < Columns; x++)	
 				{
 					if(blocks[x, y].Visible)
 					{
@@ -351,7 +366,6 @@ namespace SameGameXna
 			}
 
 			return true;
-			*/
 		}
 	}
 }

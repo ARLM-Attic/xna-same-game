@@ -60,10 +60,14 @@
     <Compile Include="Forms\GameStatusBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\HighScoresForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameClock.cs" />
     <Compile Include="GameMessages.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="HighScores.cs" />
     <Compile Include="IGameWindow.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="Win32\Win32Message.cs" />

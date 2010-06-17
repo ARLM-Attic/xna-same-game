@@ -15,9 +15,10 @@ namespace SameGameXna.Forms
 		{
 			this.game = game;
 
-			var file = (ToolStripMenuItem)this.Items.Add("&File");
-			file.DropDownItems.Add("&New Game", null, (s, e) => { this.game.NewGame(); });
-			file.DropDownItems.Add("E&xit", null, (s, e) => { this.game.Exit(); });
+			var gameMenu = (ToolStripMenuItem)this.Items.Add("&Game");
+			gameMenu.DropDownItems.Add("&New", null, (s, e) => { this.game.NewGame(); });
+			gameMenu.DropDownItems.Add("&High Scores", null, (s, e) => { var form = new HighScoresForm(this.game); form.ShowDialog(this); });
+			gameMenu.DropDownItems.Add("E&xit", null, (s, e) => { this.game.Exit(); });
 
 			var settings = (ToolStripMenuItem)this.Items.Add("&Settings");
 			

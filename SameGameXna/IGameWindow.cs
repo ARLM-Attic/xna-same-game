@@ -20,7 +20,8 @@ namespace SameGameXna
 		/// </summary>
 		void Run();
 
-
 		void ShowMessage(GameMessages messages);
+
+		void ShowGameOverMessage(UInt64 score, bool isHighScore, string rank);
 	}
 }

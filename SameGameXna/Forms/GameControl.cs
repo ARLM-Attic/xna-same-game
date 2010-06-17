@@ -43,7 +43,7 @@ namespace SameGameXna.Forms
 				this.game.Board.LeftClick(new Microsoft.Xna.Framework.Point(e.Location.X, e.Location.Y));
 		}
 
-		protected override void  OnMouseDoubleClick(MouseEventArgs e)
+		protected override void OnMouseDoubleClick(MouseEventArgs e)
 		{
 			base.OnMouseDoubleClick(e);
 

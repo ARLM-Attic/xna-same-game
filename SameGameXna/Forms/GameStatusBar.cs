@@ -24,9 +24,9 @@ namespace SameGameXna.Forms
 				
 		public void UpdateText()
 		{
-			this.Items[0].Text = "Score: " + this.game.Board.Score.ToString();
+			this.Items[0].Text = "Score: " + this.game.Board.Score.ToString("#,0");
 			this.Items[1].Text = "Selected: " + this.game.Board.SelectedCount.ToString();
-			this.Items[2].Text = "Value: " + this.game.Board.SelectedValue.ToString();
+			this.Items[2].Text = "Value: " + this.game.Board.SelectedValue.ToString("#,0");
 			this.Items[3].Text = "Remaining: " + this.game.Board.Remaining.ToString();
 		}
 	}

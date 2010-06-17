@@ -82,7 +82,21 @@ namespace SameGameXna.Forms
 					break;
 			}
 
-			MessageBox.Show(messageText, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(this, messageText, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+		public void ShowGameOverMessage(UInt64 score, bool isHighScore, string rank)
+		{
+			if(isHighScore)
+			{
+				string message = "Congratulations!\nYou ranked " + rank + "\nFinal Score: " + score.ToString("#,0");
+				MessageBox.Show(this, message, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			else
+			{
+				string message = "Final Score: " + score.ToString("#,0");
+				MessageBox.Show(this, message, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
 		}
 	}
 }
