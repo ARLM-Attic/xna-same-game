@@ -134,7 +134,7 @@ namespace SameGameXna
 		/// </summary>
 		/// <param name="score"></param>
 		/// <returns></returns>
-		public string GetRank(UInt64 score)
+		public int GetRank(UInt64 score)
 		{
 			int rank = 0;
 			for(int i = 0; i < MaxHighScores; i++)
@@ -146,21 +146,7 @@ namespace SameGameXna
 				}
 			}
 
-			switch(rank)
-			{
-				case 1: return "1st"; 
-				case 2: return "2nd";
-				case 3: return "3rd";
-				case 4: return "4th";
-				case 5: return "5th";
-				case 6: return "6th";
-				case 7: return "7th";
-				case 8: return "8th";
-				case 9: return "9th";
-				case 10: return "10th";
-			}
-
-			return "";
+			return rank;
 		}
 	}
 }

@@ -71,7 +71,7 @@ namespace SameGameXna.Forms
 			this.Size = new Size(this.Width + addedWidth, this.Height + addedHeight);
 		}
 
-		public void ShowMessage(GameMessages message)
+		public void ShowMessage(GameMessages message, params object[] args)
 		{
 			string messageText = "";
 
@@ -80,23 +80,22 @@ namespace SameGameXna.Forms
 				case GameMessages.AtLeast2BlocksMustBeSelectedToRemove:
 					messageText = "At least 2 blocks must be selected to remove.";
 					break;
+
+				case GameMessages.GameOver:
+					UInt64 score = (UInt64)args[0];
+					messageText = "Game Over\nFinal Score: " + score.ToString("#,0");
+					break;
 			}
 
 			MessageBox.Show(this, messageText, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
-		public void ShowGameOverMessage(UInt64 score, bool isHighScore, string rank)
+		public string CollectHighScoreName(int rank)
 		{
-			if(isHighScore)
-			{
-				string message = "Congratulations!\nYou ranked " + rank + "\nFinal Score: " + score.ToString("#,0");
-				MessageBox.Show(this, message, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
-			else
-			{
-				string message = "Final Score: " + score.ToString("#,0");
-				MessageBox.Show(this, message, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
+			var newHighScoreForm = new NewHighScoreForm(rank);
+			newHighScoreForm.ShowDialog(this);
+
+			return newHighScoreForm.EnteredName;
 		}
 	}
 }

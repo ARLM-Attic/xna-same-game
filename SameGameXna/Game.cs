@@ -153,7 +153,15 @@ namespace SameGameXna
 
 		private void GameOver(object sender, EventArgs e)
 		{
-			this.Window.ShowGameOverMessage(this.Board.Score, false, "");
+			var score = this.Board.Score;
+
+			if(this.HighScores.IsHighScore(score))
+			{
+				string name = this.Window.CollectHighScoreName(this.HighScores.GetRank(score));
+				this.HighScores.AddHighScore(name, score);
+			}
+
+			this.Window.ShowMessage(GameMessages.GameOver, score);
 		}
 
 		public void NewGame()

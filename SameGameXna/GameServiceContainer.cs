@@ -24,10 +24,10 @@ namespace SameGameXna
 		/// <param name="provider"></param>
 		public void AddService(Type type, Object provider)
 		{
-			if(null == type)
+			if(type == null)
 				throw new ArgumentNullException("type");
 
-			if(null == provider)
+			if(provider == null)
 				throw new ArgumentNullException("provider");
 
 			if(this.services.ContainsKey(type))
@@ -42,35 +42,17 @@ namespace SameGameXna
 		}
 
 		/// <summary>
-		/// Attempts to create a requested service provider when none is currently registered.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		protected virtual object CreateService(Type type)
-		{
-			return null;
-		}
-
-		/// <summary>
 		/// Returns a registered service provider.
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns></returns>
 		public object GetService(Type type)
 		{
-			if(null == type)
+			if(type == null)
 				throw new ArgumentNullException("type");
 
 			if(this.services.ContainsKey(type))
 				return this.services[type];
-
-			var provider = this.CreateService(type);
-
-			if(null != provider)
-			{
-				this.AddService(type, provider);
-				return provider;
-			}
 
 			return null;
 		}
@@ -81,7 +63,7 @@ namespace SameGameXna
 		/// <param name="type"></param>
 		public void RemoveService(Type type)
 		{
-			if(null == type)
+			if(type == null)
 				throw new ArgumentNullException("type");
 
 			this.services.Remove(type);
