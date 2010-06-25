@@ -24,6 +24,7 @@ namespace SameGameXna.Forms
 		{
 			this.game = game;
 
+			this.Icon = SameGameXna.Properties.Resources.Icon;
 			this.Text = "Same Game Xna";
 			this.Size = new Size(800, 576);
 			this.FormBorderStyle = FormBorderStyle.Fixed3D;
@@ -79,6 +80,14 @@ namespace SameGameXna.Forms
 			{
 				case GameMessages.AtLeast2BlocksMustBeSelectedToRemove:
 					messageText = "At least 2 blocks must be selected to remove.";
+					break;
+
+				case GameMessages.Only1BlockMustBeSelectedToSingleRemove:
+					messageText = "Only 1 block must be selected for single remove.";
+					break;
+
+				case GameMessages.SingleRemoveNotAvailable:
+					messageText = "No more single removes available.";
 					break;
 
 				case GameMessages.GameOver:

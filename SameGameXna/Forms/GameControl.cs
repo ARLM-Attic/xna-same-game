@@ -41,6 +41,8 @@ namespace SameGameXna.Forms
 
 			if(e.Button == MouseButtons.Left)
 				this.game.Board.LeftClick(new Microsoft.Xna.Framework.Point(e.Location.X, e.Location.Y));
+			else if(e.Button == MouseButtons.Right)
+				this.game.Board.RightClick(new Microsoft.Xna.Framework.Point(e.Location.X, e.Location.Y));
 		}
 
 		protected override void OnMouseDoubleClick(MouseEventArgs e)

@@ -59,5 +59,12 @@ namespace SameGameXna.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Icon Icon {
+            get {
+                object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

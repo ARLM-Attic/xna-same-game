@@ -56,6 +56,12 @@ namespace SameGameXna
 			private set;
 		}
 
+		public bool SingleRemoveAvailable
+		{
+			get;
+			private set;
+		}
+
 		public bool IsGameOver
 		{
 			get;
@@ -97,6 +103,8 @@ namespace SameGameXna
 			this.Score = 0;
 			this.Remaining = TotalBlocks;
 
+			this.SingleRemoveAvailable = true;
+
 			this.IsGameOver = false;
 
 			if(this.StatsUpdated != null)
@@ -119,7 +127,7 @@ namespace SameGameXna
 				}
 			}
 
-			if(this.removeAnimationInProgress && this.removeAnimationDuation.TotalSeconds >= TotalRemoveAnimationDuration)
+			if(!this.IsGameOver && this.removeAnimationInProgress && this.removeAnimationDuation.TotalSeconds >= TotalRemoveAnimationDuration)
 			{
 				RemoveSelected();
 				this.removeAnimationInProgress = false;
@@ -136,18 +144,45 @@ namespace SameGameXna
 
 		public void LeftClick(Point point)
 		{
-			var boardPosition = new Point(point.X / Block.Width, point.Y / Block.Height);
-			ScanStart(boardPosition);
+			if(!this.IsGameOver)
+			{
+				var boardPosition = new Point(point.X / Block.Width, point.Y / Block.Height);
+				ScanStart(boardPosition);
+			}
 		}
 
 		public void DoubleLeftClick(Point point)
 		{
-			var boardPosition = new Point(point.X / Block.Width, point.Y / Block.Height);
+			if(!this.IsGameOver)
+			{
+				if(this.SelectedCount >= 2)
+					BeginRemoveAnimation();
+				else if(this.SelectedCount == 1)
+					this.game.Window.ShowMessage(GameMessages.AtLeast2BlocksMustBeSelectedToRemove);
+			}
+		}
 
-			if(this.SelectedCount >= 2)
-				BeginRemoveAnimation();
-			else if(this.SelectedCount == 1)
-				this.game.Window.ShowMessage(GameMessages.AtLeast2BlocksMustBeSelectedToRemove);
+		public void RightClick(Point point)
+		{
+			if(!this.IsGameOver)
+			{
+				if(this.SingleRemoveAvailable)
+				{
+					if(this.SelectedCount == 1)
+					{
+						this.SingleRemoveAvailable = false;
+						BeginRemoveAnimation();
+					}
+					else
+					{
+						this.game.Window.ShowMessage(GameMessages.Only1BlockMustBeSelectedToSingleRemove);
+					}
+				}
+				else
+				{
+					this.game.Window.ShowMessage(GameMessages.SingleRemoveNotAvailable);
+				}
+			}
 		}
 
 		private void ScanStart(Point boardPosition)
@@ -346,6 +381,9 @@ namespace SameGameXna
 		{
 			if(this.Remaining == 0)
 				return true;
+
+			if(this.SingleRemoveAvailable)
+				return false;
 			
 			for(int y = 0; y < Rows; y++)
 			{
