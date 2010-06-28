@@ -16,6 +16,7 @@ namespace SameGameXna.Forms
 			this.game = game;
 
 			var gameMenu = (ToolStripMenuItem)this.Items.Add("&Game");
+			
 			gameMenu.DropDownItems.Add("&New", null, (s, e) => { this.game.NewGame(); });
 			gameMenu.DropDownItems.Add("&High Scores", null, (s, e) => { var form = new HighScoresForm(this.game); form.ShowDialog(this); });
 			gameMenu.DropDownItems.Add("E&xit", null, (s, e) => { this.game.Exit(); });
@@ -25,6 +26,10 @@ namespace SameGameXna.Forms
 			var settingsAnimate = (ToolStripMenuItem)settings.DropDownItems.Add("&Animate Blocks", null, (s, e) => { this.game.Settings.Animate = !this.game.Settings.Animate; });
 			settingsAnimate.Checked = this.game.Settings.Animate;
 			this.game.Settings.AnimateChanged += (s, e) => { settingsAnimate.Checked = this.game.Settings.Animate; };
+
+			var help = (ToolStripMenuItem)this.Items.Add("&Help");
+
+			help.DropDownItems.Add("&About", null, (s, e) => { var form = new AboutForm(); form.ShowDialog(this); });
 		}
 	}
 }

@@ -21,9 +21,9 @@ namespace SameGameXna
 
 		public static BlockMultiplier NextBlockMultipler(this Random random)
 		{
-			int i = random.Next(51);
+			int i = random.Next(101);
 
-			if(i % 10 == 0)
+			if(i % 20 == 0)
 			{
 				i = random.Next(3);
 
