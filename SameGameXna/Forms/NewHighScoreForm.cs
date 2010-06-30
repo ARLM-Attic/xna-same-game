@@ -23,6 +23,7 @@ namespace SameGameXna.Forms
 			this.MinimizeBox = false;
 			this.Padding = new Padding(5);
 			this.ShowInTaskbar = false;
+			this.StartPosition = FormStartPosition.CenterParent;
 			this.Text = "New High Score";
 			this.Width = 240;
 
@@ -47,6 +48,12 @@ namespace SameGameXna.Forms
 			};
 			ok.Click += (s, e) => { this.Close(); };
 			this.Controls.Add(ok);
+		}
+
+		protected override void OnParentChanged(EventArgs e)
+		{
+			base.OnParentChanged(e);
+			this.CenterToParent();
 		}
 
 		/// <summary>

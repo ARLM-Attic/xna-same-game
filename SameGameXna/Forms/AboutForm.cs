@@ -20,6 +20,7 @@ namespace SameGameXna.Forms
 			this.Text = "About";
 			this.Width = 200;
 			this.Height = 150;
+			this.StartPosition = FormStartPosition.CenterParent;
 			this.ShowInTaskbar = false;
 
 			var label = new Label()

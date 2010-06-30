@@ -21,6 +21,7 @@ namespace SameGameXna.Forms
 			this.MinimizeBox = false;
 			this.MaximizeBox = false;
 			this.Padding = new Padding(5);
+			this.StartPosition = FormStartPosition.CenterParent;
 			this.Text = "High Scores";
 
 			var panel = new TableLayoutPanel()
@@ -47,6 +48,12 @@ namespace SameGameXna.Forms
 				panel.Controls.Add(new Label() { Text = highScore.name, TextAlign = ContentAlignment.MiddleLeft }, 0, i);
 				panel.Controls.Add(new Label() { Text = highScore.score.ToString("#,0"), TextAlign = ContentAlignment.MiddleLeft }, 1, i);
 			}
+		}
+
+		protected override void OnParentChanged(EventArgs e)
+		{
+			base.OnParentChanged(e);
+			this.CenterToParent();
 		}
 	}
 }
